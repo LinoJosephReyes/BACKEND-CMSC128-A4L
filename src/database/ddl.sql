@@ -38,7 +38,7 @@ create table ACTIVITY(
 );
 
 create table SERVICE(
-  service_id int AUTO_INCREMENT,
+  service_id int not null AUTO_INCREMENT,
   category varchar(255) not null,
   title varchar(255) not null,
   no_of_hours int(10) not null,
@@ -138,18 +138,17 @@ create table STUDYLOAD( -- SAME CONCEPT AS THE TEACHINGLOAD
   constraint studyload_subject_code_fk foreign key (subject_code) references SUBJECT(subject_code)
 );
 
---view procedure (activity)
-DROP PROCEDURE IF EXISTS viewActivity;
+
+DROP PROCEDURE IF EXISTS viewActivity; 
 DELIMITER GO
 CREATE PROCEDURE viewActivity()
   BEGIN 
-    SELECT * from ACTIVITY
+    SELECT * from ACTIVITY;
 END;
 GO
 DELIMITER ;
 
---insert procedure (activity)
-DROP PROCEDURE IF EXISTS insertActivity;
+DROP PROCEDURE IF EXISTS insertActivity; 
 DELIMITER GO
 CREATE PROCEDURE insertActivity(   credit_unit int (255),
                                    activity_name varchar(20), 
@@ -162,24 +161,24 @@ CREATE PROCEDURE insertActivity(   credit_unit int (255),
                                    emp_id varchar(10) )
   BEGIN 
     INSERT INTO ACTIVITY
-        values (credit_unit, activity_name, activity_type, no_of_hours, no_of_participants, activity_role, start_time, end_time, emp_id);
+        values (NULL, credit_unit, activity_name, activity_type, no_of_hours, no_of_participants, activity_role, start_time, end_time, emp_id);
 END;
 GO
 DELIMITER ;
 
---delete procedure (activity)
-DROP PROCEDURE IF EXISTS deleteActivity;
+
+DROP PROCEDURE IF EXISTS deleteActivity; 
 DELIMITER GO
-CREATE PROCEDURE deleteActivity(activity_id_del int)--id to be deleted
-  BEGIN 
+CREATE PROCEDURE deleteActivity(  activity_id_del int)
+BEGIN
     DELETE FROM ACTIVITY
       where activity_id = activity_id_del;
 END;
 GO
 DELIMITER ;
 
---update procedure (activity)
-DROP PROCEDURE IF EXISTS updateActivity;
+
+DROP PROCEDURE IF EXISTS updateActivity; 
 DELIMITER GO
 CREATE PROCEDURE updateActivity(   activity_id_update int,
                                    credit_unit_update int (255),
@@ -194,8 +193,8 @@ CREATE PROCEDURE updateActivity(   activity_id_update int,
   BEGIN 
     UPDATE ACTIVITY
         SET  credit_unit = credit_unit_update, 
-             activity_name = activity_id_update,
-             activity_type = activity_id_update, 
+             activity_name = activity_name_update,
+             activity_type = activity_type_update, 
              no_of_hours = no_of_hours_update, 
              no_of_participants = no_of_participants_update, 
              activity_role = activity_role_update, 
@@ -206,6 +205,83 @@ CREATE PROCEDURE updateActivity(   activity_id_update int,
 END;
 GO
 DELIMITER ;
+
+
+
+DROP PROCEDURE IF EXISTS viewPosition; 
+DELIMITER GO
+CREATE PROCEDURE viewPosition()
+BEGIN
+    SELECT * FROM POSITIONN;
+END;
+GO
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS insertPosition;
+DELIMITER GO
+CREATE PROCEDURE insertPosition(office varchar(255),
+                                credit_units int(10),
+                                emp_id varchar(10))
+BEGIN
+    INSERT INTO POSITIONN
+      values (NULL, office, credit_units, emp_id);
+END;
+GO
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS deletePositionn;
+DELIMITER GO
+CREATE PROCEDURE deletePositionn(position_id_del int)
+  BEGIN 
+    DELETE FROM POSITIONN
+      where position_id = position_id_del;
+END;
+GO
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS updatePosition;
+DELIMITER GO
+CREATE PROCEDURE updatePosition(position_id_update int,
+                                office_update varchar(255),
+                                credit_units_update int,
+                                emp_id_update varchar(10))
+  BEGIN 
+    UPDATE POSITIONN
+        SET  office = office_update,
+            credit_units = credit_units_update,
+            emp_id = emp_id_update
+        WHERE position_id = position_id_update;
+END;
+GO
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS viewService; 
+DELIMITER GO
+CREATE PROCEDURE viewService()
+BEGIN
+    SELECT * FROM SERVICE;
+END;
+GO
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS insertService;
+DELIMITER GO
+CREATE PROCEDURE insertService( 
+                                category varchar(255),
+                                title varchar(255),
+                                no_of_hours int(10),
+                                no_of_participants int(10),
+                                role varchar(10),
+                                credits int (10),
+                                emp_id varchar(10)
+)
+BEGIN
+    INSERT INTO SERVICE
+      values (NULL, category, title, no_of_hours, no_of_participants, role, credits, emp_id);
+END;
+GO
+DELIMITER ;
+
 
 INSERT INTO `EMPLOYEE` VALUES ('0000000000', 'admin','admin','ADMIN', 'hello', 'world', '!', 'ADMIN', 'ICS', 'CAS');
 INSERT INTO `EMPLOYEE` VALUES ('0000000001', 'bea', 'bautista123', 'USER', 'Bianca', 'B?', 'Bautista', 'FACULTY', 'ICS', 'CAS');
